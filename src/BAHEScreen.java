@@ -5,7 +5,6 @@
  *
  * Date: Nov 11, 2017
  */
-package reyesProjects;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -54,6 +53,11 @@ public class BAHEScreen extends JPanel implements ActionListener, KeyListener
 	public Puck[] getMovingObjects()
 	{
 		return movingObjects;
+	}
+
+	public Board getBoard()
+	{
+		return board;
 	}
 	
 	public void update()

@@ -5,7 +5,6 @@
  *
  * Date: Nov 11, 2017
  */
-package reyesProjects;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -65,7 +64,7 @@ public class Board
 
 	public void paint(Graphics g)
 	{
-		//Drawing Board
+		//Drawing Board/walls
 		g.setColor(boardWallColor);
 		g.fillRect(0, scoreBoardHeight, gameWidth, gameHeight-scoreBoardHeight);
 		g.setColor(Color.BLACK);

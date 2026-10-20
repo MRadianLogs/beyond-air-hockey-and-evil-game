@@ -5,7 +5,6 @@
  *
  * Date: Nov 11, 2017
  */
-package reyesProjects;
 
 /**
  * <Insert C;ass Description Here>

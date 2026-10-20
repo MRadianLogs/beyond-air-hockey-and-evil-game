@@ -5,7 +5,6 @@
  *
  * Date: Nov 11, 2017
  */
-package reyesProjects;
 
 import java.awt.Graphics;
 import java.awt.Polygon;

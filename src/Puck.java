@@ -5,22 +5,15 @@
  *
  * Date: Nov 11, 2017
  */
-package reyesProjects;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-/**
- * <Insert C;ass Description Here>
- *
- * @author Michael Jesus Reyes
- *
- */
 public class Puck 
 {
 	private BAHE game;
 	private static final int RADIUS=20; //Normally 20
-	private int x, y, xa, ya;
+	private int xPos, yPos, xVelocity, yVelocity, xAcceleration, yAcceleration;
 	private int centerX;
 	private int centerY;
 	private Color currentColor;
@@ -33,11 +26,15 @@ public class Puck
 		this.down = downKey;
 		this.left = leftKey;
 		this.right = rightKey;
-		this.x = startingXPos;
-		this.y = startingYPos;
+		this.xPos = startingXPos;
+		this.yPos = startingYPos;
 		//How do I decide where pucks spawn?
 		//3 on each side. In triangle formation?
-		
+		xVelocity = 0;
+		yVelocity = 0;
+		xAcceleration = 0;
+		yAcceleration = 0;
+
 		this.setColor(Color.BLUE);
 	}
 	
@@ -68,21 +65,31 @@ public class Puck
 	
 	public void update()
 	{
-		x += xa;
-		y += ya;
-		centerX = x + RADIUS;
-		centerY = y + RADIUS;
+		xVelocity += xAcceleration;
+		yVelocity += yAcceleration;
+		xPos += xVelocity;
+		yPos += yVelocity;
+		centerX = xPos + RADIUS;
+		centerY = yPos + RADIUS;
 		//Need to check for collisions
 		checkMovingObjectCollision();
+		checkWallCollision();
 		//Need to check what side each puck is on WIN CONDITION
 	}
 	
-	public void checkWallCollision(Barrier wall)
+	public void checkWallCollision()
 	{
-		
-		//Ex. Hit on top section, flip ya.
-		//Ex. Hit on side sections, flip xa.
-		//Ex. Hit on top corner, flip xa and xy.
+		//Check all the walls and check if the puck is colliding with any of them. If it is, then flip the direction of the puck.
+		//Ex. Hit on top or bottom section, flip yVelocity.
+		if(yPos <= game.getScreen().getBoard().getTopBounds() || yPos >= game.getScreen().getBoard().getBottomBounds())
+		{
+			yVelocity = -yVelocity;
+		}
+		//Ex. Hit on side sections, flip xVelocity.
+		if(xPos <= game.getScreen().getBoard().getLeftBounds() || xPos >= game.getScreen().getBoard().getRightBounds())
+		{
+			xVelocity = -xVelocity;
+		}
 	}
 	
 	public void checkMovingObjectCollision()
@@ -132,19 +139,19 @@ public class Puck
 	{
 		if(keyCode == up)
 		{
-			this.ya = -1;
+			this.yAcceleration = -1;
 		}
 		else if(keyCode == down)
 		{
-			this.ya = 1;
+			this.yAcceleration = 1;
 		}
 		if(keyCode == left)
 		{
-			this.xa = -1;
+			this.xAcceleration = -1;
 		}
 		else if(keyCode == right)
 		{
-			this.xa = 1;
+			this.xAcceleration = 1;
 		}
 	}
 	
@@ -152,17 +159,17 @@ public class Puck
 	{
 		if(keyCode == up || keyCode == down)
 		{
-			this.ya = 0;
+			this.yAcceleration = 0;
 		}
 		if(keyCode == left || keyCode == right)
 		{
-			this.xa = 0;
+			this.xAcceleration = 0;
 		}
 	}
 	
 	public void paint(Graphics g)
 	{
 		g.setColor(currentColor);
-		g.fillOval(x, y, RADIUS*2, RADIUS*2);
+		g.fillOval(xPos, yPos, RADIUS*2, RADIUS*2);
 	}
 }
