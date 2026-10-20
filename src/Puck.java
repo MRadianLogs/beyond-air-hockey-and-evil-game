@@ -94,6 +94,7 @@ public class Puck
 	
 	public void checkMovingObjectCollision()
 	{
+		//TODO: Use squared distances instead to save performance cost of using square root!
 		Puck[] movingObjects = this.game.getScreen().getMovingObjects();
 		for(int i = 0; i < movingObjects.length; i++)
 		{
