@@ -7,6 +7,8 @@
  */
 
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
 /**
@@ -23,13 +25,24 @@ public class BAHE extends JFrame
 	
 	public BAHE()
 	{
-		setSize(WIDTH, HEIGHT);
+		//setSize(WIDTH, HEIGHT);
 		setTitle("Beyond Air Hockey and Evil");
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		screen = new BAHEScreen(this);
+		screen.setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		add(screen);
+		pack();
 		setVisible(true);
+	}
+
+	public int getWidth()
+	{
+		return WIDTH;
+	}
+	public int getHeight()
+	{
+		return HEIGHT;
 	}
 	
 	public BAHEScreen getScreen()

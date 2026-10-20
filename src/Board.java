@@ -23,7 +23,7 @@ public class Board
 	private int scoreBoardHeight = 75;
 	private int scoreBoardWidth = 100;
 	private Color scoreBoardColor = new Color(55, 247, 247); //Neon light bluish
-	private int boardWidth = 20;
+	private int boardWallWidth = 20;
 	private Color boardWallColor = new Color(0, 255, 0); //Neon green
 	private Barrier barrier;
 	private Color barrierColor = new Color(55, 30, 216);
@@ -31,9 +31,9 @@ public class Board
 	public Board(BAHE game)
 	{
 		//this.game = game; Not needed? Because of gameVars
-		gameHeight = game.getHeight()-35; //35 pixels cut off on bottom. 
-		gameWidth = game.getWidth()-5; //5 pixels cut off on side.
-		barrier = new Barrier(gameWidth, gameHeight, scoreBoardHeight, boardWidth);
+		gameHeight = game.getHeight(); //35 pixels cut off on bottom. 
+		gameWidth = game.getWidth(); //5 pixels cut off on side.
+		barrier = new Barrier(gameWidth, gameHeight, scoreBoardHeight, boardWallWidth);
 	}
 	
 	//Needed?
@@ -44,22 +44,22 @@ public class Board
 
 	public int getLeftBounds()
 	{
-		return boardWidth;
+		return boardWallWidth;
 	}
 	
 	public int getRightBounds()
 	{
-		return gameWidth - boardWidth;
+		return gameWidth - boardWallWidth;
 	}
 	
 	public int getTopBounds()
 	{
-		return scoreBoardHeight + boardWidth;
+		return scoreBoardHeight + boardWallWidth;
 	}
 	
 	public int getBottomBounds()
 	{
-		return gameHeight - boardWidth;
+		return gameHeight - boardWallWidth;
 	}
 
 	public void paint(Graphics g)
@@ -68,7 +68,7 @@ public class Board
 		g.setColor(boardWallColor);
 		g.fillRect(0, scoreBoardHeight, gameWidth, gameHeight-scoreBoardHeight);
 		g.setColor(Color.BLACK);
-		g.fillRect(boardWidth, scoreBoardHeight+boardWidth, gameWidth-(boardWidth*2), gameHeight-scoreBoardHeight-(boardWidth*2));
+		g.fillRect(boardWallWidth, scoreBoardHeight+boardWallWidth, gameWidth-(boardWallWidth*2), gameHeight-scoreBoardHeight-(boardWallWidth*2));
 		
 		//Drawing ScoreBoard
 		g.setColor(scoreBoardColor);
