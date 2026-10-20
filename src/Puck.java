@@ -81,12 +81,12 @@ public class Puck
 	{
 		//Check all the walls and check if the puck is colliding with any of them. If it is, then flip the direction of the puck.
 		//Ex. Hit on top or bottom section, flip yVelocity.
-		if(yPos <= game.getScreen().getBoard().getTopBounds() || yPos >= game.getScreen().getBoard().getBottomBounds())
+		if(yPos <= game.getScreen().getBoard().getTopBounds() || (yPos+RADIUS*2) >= game.getScreen().getBoard().getBottomBounds())
 		{
 			yVelocity = -yVelocity;
 		}
 		//Ex. Hit on side sections, flip xVelocity.
-		if(xPos <= game.getScreen().getBoard().getLeftBounds() || xPos >= game.getScreen().getBoard().getRightBounds())
+		if(xPos <= game.getScreen().getBoard().getLeftBounds() || (xPos+RADIUS*2) >= game.getScreen().getBoard().getRightBounds())
 		{
 			xVelocity = -xVelocity;
 		}

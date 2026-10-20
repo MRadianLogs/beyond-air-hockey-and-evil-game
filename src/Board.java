@@ -31,8 +31,8 @@ public class Board
 	public Board(BAHE game)
 	{
 		//this.game = game; Not needed? Because of gameVars
-		gameHeight = game.getHeight(); //35 pixels cut off on bottom. 
-		gameWidth = game.getWidth(); //5 pixels cut off on side.
+		gameHeight = game.getHeight();
+		gameWidth = game.getWidth();
 		barrier = new Barrier(gameWidth, gameHeight, scoreBoardHeight, boardWallWidth);
 	}
 	
