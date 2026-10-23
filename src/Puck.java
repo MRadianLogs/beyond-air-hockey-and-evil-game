@@ -18,6 +18,8 @@ public class Puck
 	private int centerY;
 	private Color currentColor;
 	private int up, down, left, right;
+  private double collisionDirectionX;
+  private double collisionDirectionY;
 	
 	public Puck(BAHE game, int upKey, int downKey, int leftKey, int rightKey, int startingXPos, int startingYPos)
 	{
@@ -36,6 +38,9 @@ public class Puck
 		yAcceleration = 0;
 
 		this.setColor(Color.BLUE);
+
+    this.collisionDirectionX=0.0;
+    this.collisionDirectionY=0.0;
 	}
 	
 	public int getRadius()
@@ -100,7 +105,7 @@ public class Puck
 		{
 			if(movingObjects[i]!= this)
 			{
-        //TODO: calculate and store distance
+        //calculate and store distance
         double puck1CenterY = this.getCenterYPos();
         double puck1CenterX = this.getCenterXPos();
         double puck2CenterY = movingObjects[i].getCenterYPos();
@@ -109,13 +114,19 @@ public class Puck
         double yDistance = puck2CenterY-puck1CenterY;
         double distanceSquared = xDistance*xDistance + yDistance*yDistance;
         double radiusSum = movingObjects[i].getRadius() + this.getRadius();
-        //TODO: caculate overlap to be able to shift pucks back with proper relation to time
         if(distanceSquared <= (radiusSum * radiusSum))
 				{
 					//Collision
 					this.setColor(Color.RED);
 					movingObjects[i].setColor(Color.RED);
-          
+
+          //Calculate collision direction
+          double distance = Math.sqrt(distanceSquared);
+          this.collisionDirectionX = xDistance / distance;
+          this.collisionDirectionY = yDistance / distance;
+
+          //TODO: caculate overlap to be able to shift pucks back with proper relation to time
+        
 				}
 				else
 				{
@@ -125,27 +136,6 @@ public class Puck
 			}
 		}
 	}
-	
-	/*
-	public void checkPuckCollision(Puck otherPuck)
-	{
-		//If combination of two radius >= distance from centers then collision.
-		// Distance between two points is: d = sqrt((x2-x1)^2+(y2-y1)^2)
-		System.out.println("Distance between circles: " + (Math.sqrt((double)(Math.pow((otherPuck.getCenterYPos()-this.getCenterYPos()),2) + Math.pow((otherPuck.getCenterXPos()-this.getCenterXPos()),2)))));
-		System.out.println("Sum of radii: " + (this.getRadius() + otherPuck.getRadius()));
-		if(Math.sqrt((double)(Math.pow((otherPuck.getCenterYPos()-this.getCenterYPos()),2) + Math.pow((otherPuck.getCenterXPos()-this.getCenterXPos()),2))) <= (this.getRadius() + otherPuck.getRadius()))
-		{
-			//Collision
-			this.setColor(Color.RED);
-			otherPuck.setColor(Color.RED);
-		}
-		else
-		{
-			this.setColor(Color.BLUE);
-			otherPuck.setColor(Color.BLUE);
-		}
-	}
-	*/
 	
 	public void keyPressed(int keyCode)
 	{
@@ -183,5 +173,7 @@ public class Puck
 	{
 		g.setColor(currentColor);
 		g.fillOval(xPos, yPos, RADIUS*2, RADIUS*2);
+    g.setColor(Color.ORANGE);
+    g.drawLine(this.getCenterXPos(), this.getCenterYPos(), (int)(this.getCenterXPos()+(25*collisionDirectionX)), (int)(this.getCenterYPos()+(25*collisionDirectionY)));
 	}
 }

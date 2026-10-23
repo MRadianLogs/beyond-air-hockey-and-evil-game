@@ -99,6 +99,6 @@ public class BAHEScreen extends JPanel implements ActionListener, KeyListener
 		board.paint(g);
 		movingObjects[0].paint(g);
 		movingObjects[1].paint(g);
-		g.drawLine(movingObjects[0].getCenterXPos(), movingObjects[0].getCenterYPos(), movingObjects[1].getCenterXPos(), movingObjects[1].getCenterYPos());
+		//g.drawLine(movingObjects[0].getCenterXPos(), movingObjects[0].getCenterYPos(), movingObjects[1].getCenterXPos(), movingObjects[1].getCenterYPos());
 	}
 }
