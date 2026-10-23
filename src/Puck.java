@@ -100,11 +100,22 @@ public class Puck
 		{
 			if(movingObjects[i]!= this)
 			{
-				if(Math.sqrt((double)(Math.pow((movingObjects[i].getCenterYPos()-this.getCenterYPos()),2) + Math.pow((movingObjects[i].getCenterXPos()-this.getCenterXPos()),2))) <= (this.getRadius() + movingObjects[i].getRadius()))
+        //TODO: calculate and store distance
+        double puck1CenterY = this.getCenterYPos();
+        double puck1CenterX = this.getCenterXPos();
+        double puck2CenterY = movingObjects[i].getCenterYPos();
+        double puck2CenterX = movingObjects[i].getCenterXPos();
+        double xDistance = puck2CenterX-puck1CenterX;
+        double yDistance = puck2CenterY-puck1CenterY;
+        double distanceSquared = xDistance*xDistance + yDistance*yDistance;
+        double radiusSum = movingObjects[i].getRadius() + this.getRadius();
+        //TODO: caculate overlap to be able to shift pucks back with proper relation to time
+        if(distanceSquared <= (radiusSum * radiusSum))
 				{
 					//Collision
 					this.setColor(Color.RED);
 					movingObjects[i].setColor(Color.RED);
+          
 				}
 				else
 				{
