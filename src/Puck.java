@@ -125,8 +125,14 @@ public class Puck
           this.collisionDirectionX = xDistance / distance;
           this.collisionDirectionY = yDistance / distance;
 
-          //TODO: caculate overlap to be able to shift pucks back with proper relation to time
-        
+          //Caculate overlap to be able to shift pucks back
+          double overlap = radiusSum - distance;
+          this.xPos -= collisionDirectionX * overlap/2;
+          this.yPos -= collisionDirectionY * overlap/2;
+          this.xAcceleration = 0;
+          this.yAcceleration = 0;
+          this.xVelocity = 0;
+          this.yVelocity = 0;
 				}
 				else
 				{
