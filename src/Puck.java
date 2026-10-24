@@ -133,6 +133,19 @@ public class Puck
           this.yAcceleration = 0;
           this.xVelocity = 0;
           this.yVelocity = 0;
+
+          double relativeXVelocity = movingObjects[i].xVelocity - this.xVelocity;
+          double relativeYVelocity = movingObjects[i].yVelocity - this.yVelocity;
+          double velocityAlongCollisionNormal = relativeXVelocity*collisionDirectionX + relativeYVelocity*collisionDirectionY;
+
+          double puckRestitution = 1.0;
+          double puckMass = 1.0;
+          double impulseForce = (-1*(1+puckRestitution)*velocityAlongCollisionNormal)/((1/puckMass)+(1/puckMass));
+
+          double xImpulse = impulseForce*collisionDirectionX;
+          double yImpulse = impulseForce*collisionDirectionY;
+
+          //TODO: Apply the impulse
 				}
 				else
 				{
