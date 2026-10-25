@@ -131,6 +131,10 @@ public class Puck
           this.yPos -= collisionDirectionY * overlap/2;
           this.xAcceleration = 0;
           this.yAcceleration = 0;
+          movingObjects[i].xPos += collisionDirectionX * overlap/2;
+          movingObjects[i].yPos += collisionDirectionY * overlap/2;
+          movingObjects[i].xAcceleration=0;
+          movingObjects[i].yAcceleration=0;
 
           double relativeXVelocity = movingObjects[i].xVelocity - this.xVelocity;
           double relativeYVelocity = movingObjects[i].yVelocity - this.yVelocity;
@@ -151,6 +155,8 @@ public class Puck
           //Apply the impulse
           this.xVelocity-=xImpulse/puckMass;
           this.yVelocity-=yImpulse/puckMass;
+          movingObjects[i].xVelocity+=xImpulse/puckMass;
+          movingObjects[i].yVelocity+=yImpulse/puckMass;
 				}
 				else
 				{
