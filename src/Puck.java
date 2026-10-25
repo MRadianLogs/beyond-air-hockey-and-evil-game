@@ -99,7 +99,7 @@ public class Puck
 	
 	public void checkMovingObjectCollision()
 	{
-		//TODO: Use squared distances instead to save performance cost of using square root!
+		//Use squared distances instead to save performance cost of using square root!
 		Puck[] movingObjects = this.game.getScreen().getMovingObjects();
 		for(int i = 0; i < movingObjects.length; i++)
 		{
@@ -114,7 +114,7 @@ public class Puck
         double yDistance = puck2CenterY-puck1CenterY;
         double distanceSquared = xDistance*xDistance + yDistance*yDistance;
         double radiusSum = movingObjects[i].getRadius() + this.getRadius();
-        if(distanceSquared <= (radiusSum * radiusSum))
+        if(distanceSquared < (radiusSum * radiusSum))
 				{
 					//Collision
 					this.setColor(Color.RED);
@@ -131,13 +131,16 @@ public class Puck
           this.yPos -= collisionDirectionY * overlap/2;
           this.xAcceleration = 0;
           this.yAcceleration = 0;
-          this.xVelocity = 0;
-          this.yVelocity = 0;
 
           double relativeXVelocity = movingObjects[i].xVelocity - this.xVelocity;
           double relativeYVelocity = movingObjects[i].yVelocity - this.yVelocity;
           double velocityAlongCollisionNormal = relativeXVelocity*collisionDirectionX + relativeYVelocity*collisionDirectionY;
 
+          if (velocityAlongCollisionNormal > 0) {
+            //Skip the impulse, pucks already moving apart from previous frame calculation and impulse.
+            return;
+          }
+          
           double puckRestitution = 1.0;
           double puckMass = 1.0;
           double impulseForce = (-1*(1+puckRestitution)*velocityAlongCollisionNormal)/((1/puckMass)+(1/puckMass));
@@ -145,7 +148,9 @@ public class Puck
           double xImpulse = impulseForce*collisionDirectionX;
           double yImpulse = impulseForce*collisionDirectionY;
 
-          //TODO: Apply the impulse
+          //Apply the impulse
+          this.xVelocity-=xImpulse/puckMass;
+          this.yVelocity-=yImpulse/puckMass;
 				}
 				else
 				{
