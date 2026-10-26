@@ -40,7 +40,7 @@ public class BAHEScreen extends JPanel implements ActionListener, KeyListener
 		//puck1 = new Puck(game, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, 100, 100);
 		//puck2 = new Puck(game, 0, 0, 0, 0, 150, 100); // The zeros mean no keys are assigned?
 		movingObjects[0] = new Puck(game, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, 100, 100);
-		movingObjects[1] = new Puck(game, 0, 0, 0, 0, 150, 100); // The zeros mean no keys are assigned?
+		movingObjects[1] = new Puck(game, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, 150, 100); // The zeros mean no keys are assigned?
 		//movingObjects[2] = new Puck(game, 0, 0, 0, 0, 250, 200); // The zeros mean no keys are assigned?
 		
 		Timer timer = new Timer(5,this);
@@ -62,11 +62,20 @@ public class BAHEScreen extends JPanel implements ActionListener, KeyListener
 	
 	public void update()
 	{
-		//update all moving objects
-		movingObjects[0].update();
-		movingObjects[1].update();
+		//update all moving objects positions, velocities, accelerations
+    for (int i = 0; i < movingObjects.length; i++) {
+        movingObjects[i].updateMovement();
+    }
+
+    //Check and resolve each collision pair using same movements.
 		//movingObjects[0].checkPuckCollision(movingObjects[1]);
 		//movingObjects[1].checkPuckCollision(movingObjects[0]);
+    for (int i = 0; i < movingObjects.length; i++) {
+        movingObjects[i].checkWallCollision();
+        for (int j = i + 1; j < movingObjects.length; j++) {
+            movingObjects[i].checkMovingObjectCollision(movingObjects[j]);
+        }
+    }
 	}
 	
 	public void actionPerformed(ActionEvent e)
@@ -79,12 +88,14 @@ public class BAHEScreen extends JPanel implements ActionListener, KeyListener
 	public void keyPressed(KeyEvent e)
 	{
 		movingObjects[0].keyPressed(e.getKeyCode());
+    movingObjects[1].keyPressed(e.getKeyCode());
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
 		movingObjects[0].keyReleased(e.getKeyCode());
+    movingObjects[1].keyReleased(e.getKeyCode());
 	}
 
 	@Override

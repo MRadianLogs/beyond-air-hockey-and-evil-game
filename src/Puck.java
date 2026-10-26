@@ -12,7 +12,7 @@ import java.awt.Graphics;
 public class Puck 
 {
 	private BAHE game;
-	private static final int RADIUS=20; //Normally 20
+	private static final int RADIUS=50; //Normally 20
 	private int xPos, yPos, xVelocity, yVelocity, xAcceleration, yAcceleration;
 	private int centerX;
 	private int centerY;
@@ -70,17 +70,18 @@ public class Puck
 	
 	public void update()
 	{
-		xVelocity += xAcceleration;
+		//Updates will happen from manager.
+	}
+
+  public void updateMovement()
+  {
+    xVelocity += xAcceleration;
 		yVelocity += yAcceleration;
 		xPos += xVelocity;
 		yPos += yVelocity;
 		centerX = xPos + RADIUS;
 		centerY = yPos + RADIUS;
-		//Need to check for collisions
-		checkMovingObjectCollision();
-		checkWallCollision();
-		//Need to check what side each puck is on WIN CONDITION
-	}
+  }
 	
 	public void checkWallCollision()
 	{
@@ -97,28 +98,25 @@ public class Puck
 		}
 	}
 	
-	public void checkMovingObjectCollision()
+	public void checkMovingObjectCollision(Puck otherPuck)
 	{
 		//Use squared distances instead to save performance cost of using square root!
-		Puck[] movingObjects = this.game.getScreen().getMovingObjects();
-		for(int i = 0; i < movingObjects.length; i++)
-		{
-			if(movingObjects[i]!= this)
+			if(otherPuck!= this)
 			{
         //calculate and store distance
         double puck1CenterY = this.getCenterYPos();
         double puck1CenterX = this.getCenterXPos();
-        double puck2CenterY = movingObjects[i].getCenterYPos();
-        double puck2CenterX = movingObjects[i].getCenterXPos();
+        double puck2CenterY = otherPuck.getCenterYPos();
+        double puck2CenterX = otherPuck.getCenterXPos();
         double xDistance = puck2CenterX-puck1CenterX;
         double yDistance = puck2CenterY-puck1CenterY;
         double distanceSquared = xDistance*xDistance + yDistance*yDistance;
-        double radiusSum = movingObjects[i].getRadius() + this.getRadius();
+        double radiusSum = otherPuck.getRadius() + this.getRadius();
         if(distanceSquared < (radiusSum * radiusSum))
 				{
 					//Collision
 					this.setColor(Color.RED);
-					movingObjects[i].setColor(Color.RED);
+					otherPuck.setColor(Color.RED);
 
           //Calculate collision direction
           double distance = Math.sqrt(distanceSquared);
@@ -131,13 +129,13 @@ public class Puck
           this.yPos -= collisionDirectionY * overlap/2;
           this.xAcceleration = 0;
           this.yAcceleration = 0;
-          movingObjects[i].xPos += collisionDirectionX * overlap/2;
-          movingObjects[i].yPos += collisionDirectionY * overlap/2;
-          movingObjects[i].xAcceleration=0;
-          movingObjects[i].yAcceleration=0;
+          otherPuck.xPos += collisionDirectionX * overlap/2;
+          otherPuck.yPos += collisionDirectionY * overlap/2;
+          otherPuck.xAcceleration=0;
+          otherPuck.yAcceleration=0;
 
-          double relativeXVelocity = movingObjects[i].xVelocity - this.xVelocity;
-          double relativeYVelocity = movingObjects[i].yVelocity - this.yVelocity;
+          double relativeXVelocity = otherPuck.xVelocity - this.xVelocity;
+          double relativeYVelocity = otherPuck.yVelocity - this.yVelocity;
           double velocityAlongCollisionNormal = relativeXVelocity*collisionDirectionX + relativeYVelocity*collisionDirectionY;
 
           if (velocityAlongCollisionNormal > 0) {
@@ -155,16 +153,15 @@ public class Puck
           //Apply the impulse
           this.xVelocity-=xImpulse/puckMass;
           this.yVelocity-=yImpulse/puckMass;
-          movingObjects[i].xVelocity+=xImpulse/puckMass;
-          movingObjects[i].yVelocity+=yImpulse/puckMass;
+          otherPuck.xVelocity+=xImpulse/puckMass;
+          otherPuck.yVelocity+=yImpulse/puckMass;
 				}
 				else
 				{
 					this.setColor(Color.BLUE);
-					movingObjects[i].setColor(Color.BLUE);
+					otherPuck.setColor(Color.BLUE);
 				}
 			}
-		}
 	}
 	
 	public void keyPressed(int keyCode)

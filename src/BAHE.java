@@ -20,7 +20,7 @@ import javax.swing.JFrame;
  */
 public class BAHE extends JFrame
 {
-	private final static int WIDTH = 800, HEIGHT = 500;
+	private final static int WIDTH = 1920, HEIGHT = 1080;
 	private BAHEScreen screen;
 	
 	public BAHE()
